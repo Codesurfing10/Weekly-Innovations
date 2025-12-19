@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Innovations - Latest Science & Technology News</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="animated-header">
+            <h1>Weekly Innovations</h1>
+            <p class="subtitle">Latest Breakthroughs in Science & Technology</p>
+            <button id="refreshBtn" class="refresh-btn">🔄 Refresh for Latest</button>
+        </header>
+
+        <div class="filter-tags">
+            <span class="tag active" data-category="all">All</span>
+            <span class="tag" data-category="materials">Materials</span>
+            <span class="tag" data-category="biochemistry">Biochemistry</span>
+            <span class="tag" data-category="chemistry">Chemistry</span>
+            <span class="tag" data-category="space">Space</span>
+            <span class="tag" data-category="nanotechnology">Nanotechnology</span>
+            <span class="tag" data-category="medicine">Medicine</span>
+            <span class="tag" data-category="science">Science</span>
+            <span class="tag" data-category="nature">Nature</span>
+            <span class="tag" data-category="quantum">Quantum</span>
+            <span class="tag" data-category="satellites">Satellites</span>
+            <span class="tag" data-category="solar">Solar</span>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Searching for latest innovations...</p>
+        </div>
+
+        <div id="innovations" class="innovations-grid"></div>
+
+        <div id="error" class="error-message" style="display: none;">
+            <p>Unable to fetch innovations. Please try again later.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Weekly Innovations | Updated: <span id="lastUpdate"></span></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
