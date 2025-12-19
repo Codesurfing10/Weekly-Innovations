@@ -203,7 +203,7 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     const now = new Date();
     const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     
     if (diffDays === 0) return 'Today';
     if (diffDays === 1) return 'Yesterday';
@@ -243,7 +243,7 @@ async function fetchFromNewsAPI(category) {
 async function fetchFromArXiv(category) {
     // Example integration with arXiv API for scientific papers
     // const keywords = categories[category][0];
-    // const url = `http://export.arxiv.org/api/query?search_query=all:${keywords}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=5`;
+    // const url = `https://export.arxiv.org/api/query?search_query=all:${keywords}&sortBy=lastUpdatedDate&sortOrder=descending&max_results=5`;
     // const response = await fetch(url);
     // return await response.text();
     return null;

@@ -14,8 +14,8 @@ A dynamic web application that displays the latest innovations and breakthroughs
 ## Color Scheme
 
 The application features a vibrant animated color palette:
-- **Blue** (#4682B4) - Represents technology and innovation
-- **Steel Blue** (#708090) - Professional and modern feel
+- **Steel Blue** (#4682B4) - Represents technology and innovation
+- **Steel/Gray-Blue** (rgba gradients) - Professional and modern feel
 - **Orange-Red** (#FF4500) - Energy and excitement
 - **Yellow** (#FFD700) - Optimism and breakthrough discoveries
 
