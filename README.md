@@ -11,6 +11,51 @@ A dynamic web application that displays the latest innovations and breakthroughs
 - 📱 **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 - 🔗 **Direct Links**: Easy access to full articles and research papers
 - ✨ **Dynamic Animations**: Eye-catching animations and transitions throughout
+- 🚀 **Automated CI/CD**: GitHub Actions deploys every `main` push to GitHub Pages instantly
+- 🧠 **Weekly AI Self-Improvement**: A scheduled GitHub Actions workflow uses GPT-4o-mini to analyze the site and open a PR with improvements every Monday
+
+## CI/CD & Automated Deployment
+
+### GitHub Pages
+
+Every push to `main` automatically deploys the site via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).  
+The live site is served from the custom domain **theinnovationchannel.com** (configured via `CNAME`).
+
+### Netlify
+
+1. Connect this repository to [Netlify](https://app.netlify.com) (New site → Import from Git).
+2. Set **Publish directory** to `.` (or leave blank — `netlify.toml` handles it automatically).
+3. Deploy. Security headers and asset caching are pre-configured in `netlify.toml`.
+
+### Vercel
+
+1. Import this repository on [Vercel](https://vercel.com/new).
+2. No build command is needed — Vercel detects the static site automatically.
+3. Security headers and caching rules are pre-configured in `vercel.json`.
+
+## Weekly AI Improvement Workflow
+
+[`.github/workflows/ai-improve.yml`](.github/workflows/ai-improve.yml) runs every **Monday at 06:00 UTC** (or on-demand via `workflow_dispatch`).
+
+The workflow calls the [GitHub Models API](https://github.com/marketplace/models) (`gpt-4o-mini`) via the built-in `GITHUB_TOKEN` — **no additional secrets required**.
+
+Each run rotates through five improvement types:
+
+| Week rotation | Type | Target file | What changes |
+|---|---|---|---|
+| 1 | `accessibility` | `index.html` | ARIA labels, skip link, live regions |
+| 2 | `seo` | `index.html` | Meta description, Open Graph, Twitter Card, JSON-LD |
+| 3 | `css` | `styles.css` | Smooth scroll, focus-visible styles, CSS custom properties |
+| 4 | `javascript` | `script.js` | Back-to-top button, keyboard shortcuts |
+| 5 | `content` | `script.js` | Refreshed sample innovation data with recent dates |
+
+The script validates the AI output (size sanity-check + structural checks) before writing the file. If changes are detected, a pull request is created automatically for human review.
+
+You can also trigger a specific improvement type manually:
+
+```
+GitHub → Actions → AI Site Improvement → Run workflow → choose type
+```
 
 ## Gemma AI Setup
 
