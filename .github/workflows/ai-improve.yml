@@ -1,0 +1,56 @@
+name: AI Site Improvement
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      improvement_type:
+        description: 'Improvement type (leave blank for automatic rotation)'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - accessibility
+          - seo
+          - css
+          - javascript
+          - content
+
+jobs:
+  improve:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run AI improvement script
+        id: improve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IMPROVEMENT_TYPE: ${{ inputs.improvement_type || 'auto' }}
+        run: node .github/scripts/ai-improve.js
+
+      - name: Create Pull Request
+        if: steps.improve.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'ai: ${{ steps.improve.outputs.label }}'
+          title: '🤖 AI Improvement: ${{ steps.improve.outputs.label }}'
+          body-path: .github/scripts/pr-body.md
+          branch: ai-improvement/${{ github.run_number }}
+          base: main
+          labels: ai-improvement,automated
+          delete-branch: true
