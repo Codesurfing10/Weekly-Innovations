@@ -11,8 +11,27 @@
         <header class="animated-header">
             <h1>Weekly Innovations</h1>
             <p class="subtitle">Latest Breakthroughs in Science & Technology</p>
+            <div id="aiBadge" class="ai-badge" style="display: none;">✨ Powered by Gemma AI</div>
             <button id="refreshBtn" class="refresh-btn">🔄 Refresh for Latest</button>
         </header>
+
+        <div class="api-settings">
+            <button id="settingsToggle" class="settings-toggle">⚙️ Gemma AI Settings</button>
+            <div id="settingsPanel" class="settings-panel" style="display: none;">
+                <p class="settings-description">
+                    Enter your <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="settings-link">Google AI Studio API key</a>
+                    to enable Gemma AI for real-time, cutting-edge innovation discovery across all fields.
+                    Your key is stored locally in your browser and never sent anywhere except Google's API.
+                </p>
+                <div class="api-key-row">
+                    <input type="password" id="apiKeyInput" class="api-key-input" placeholder="Paste your Google AI API key here…" autocomplete="off" />
+                    <button id="toggleKeyVisibility" class="toggle-key-btn" aria-label="Show or hide API key">👁️</button>
+                    <button id="saveApiKey" class="save-key-btn">Save</button>
+                    <button id="clearApiKey" class="clear-key-btn">Clear</button>
+                </div>
+                <p id="apiKeyStatus" class="api-key-status"></p>
+            </div>
+        </div>
 
         <div class="filter-tags">
             <span class="tag active" data-category="all">All</span>
@@ -31,13 +50,13 @@
 
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <p>Searching for latest innovations...</p>
+            <p id="loadingText">Searching for latest innovations...</p>
         </div>
 
         <div id="innovations" class="innovations-grid"></div>
 
         <div id="error" class="error-message" style="display: none;">
-            <p>Unable to fetch innovations. Please try again later.</p>
+            <p id="errorText">Unable to fetch innovations. Please try again later.</p>
         </div>
     </div>
 
