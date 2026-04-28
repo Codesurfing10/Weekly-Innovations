@@ -13,6 +13,105 @@ const categories = {
     solar: ['solar energy', 'photovoltaic', 'solar power']
 };
 
+// Gemma AI configuration
+const GEMMA_MODEL = 'gemma-3-27b-it';
+const GEMMA_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
+
+// Retrieve and persist the API key in localStorage
+function getApiKey() {
+    return localStorage.getItem('gemma_api_key') || '';
+}
+
+function saveApiKey(key) {
+    // The key is stored in localStorage so users don't have to re-enter it on every visit.
+    // This is intentional for a client-side-only app; there is no server-side alternative.
+    // Users are informed of this in the settings panel.
+    localStorage.setItem('gemma_api_key', key.trim());
+}
+
+function clearApiKey() {
+    localStorage.removeItem('gemma_api_key');
+}
+
+// Escape HTML special characters to prevent XSS when inserting AI-generated text
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// Validate that a URL uses http or https to prevent javascript: injection
+function sanitizeUrl(url) {
+    try {
+        const parsed = new URL(url);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+            return url;
+        }
+    } catch (_) { /* ignore */ }
+    return '#';
+}
+
+// Call Gemma AI to generate cutting-edge innovations for the given category
+async function fetchFromGemma(category) {
+    const apiKey = getApiKey();
+    if (!apiKey) return null;
+
+    const categoryScope = category === 'all'
+        ? `a diverse mix of the following fields: ${Object.keys(categories).join(', ')}`
+        : `the "${category}" field (related topics: ${categories[category].join(', ')})`;
+
+    const categoryRule = category === 'all'
+        ? `Spread entries across these categories: ${Object.keys(categories).join(', ')}`
+        : `Set the "category" field to "${category}" for every entry`;
+
+    const prompt = `You are an expert science and technology journalist with access to the latest research.
+Generate 8 of the most cutting-edge, real-world innovation summaries representing genuine recent breakthroughs (2024-2025) in ${categoryScope}.
+
+Return ONLY a valid JSON array containing exactly 8 objects. Do not include markdown code fences, prose, or any text outside the JSON array.
+Each object must have these exact keys:
+- "title": string — a compelling, factual headline (max 100 characters)
+- "category": string — ${categoryRule}
+- "description": string — 2-3 sentences describing the breakthrough and its broader significance
+- "date": string — publication or announcement date in YYYY-MM-DD format, within the last 6 months
+- "url": string — a real, authoritative URL (e.g. nature.com, science.org, nasa.gov, arxiv.org, pubmed.ncbi.nlm.nih.gov, cell.com, thelancet.com, esa.int, etc.)`;
+
+    const response = await fetch(
+        `${GEMMA_API_BASE}/${GEMMA_MODEL}:generateContent?key=${apiKey}`,
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 2048
+                }
+            })
+        }
+    );
+
+    if (!response.ok) {
+        const errBody = await response.json().catch(() => ({}));
+        throw new Error(errBody.error?.message || `Gemma API error ${response.status}`);
+    }
+
+    const data = await response.json();
+    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+    // Strip markdown code fences if the model wraps its response in them
+    const jsonText = rawText
+        .replace(/^```(?:json)?\s*/i, '')
+        .replace(/\s*```$/i, '')
+        .trim();
+
+    const parsed = JSON.parse(jsonText);
+    if (!Array.isArray(parsed)) throw new Error('Gemma returned unexpected format');
+    return parsed;
+}
+
 // Sample innovations data (in production, this would come from APIs)
 const sampleInnovations = [
     {
@@ -108,9 +207,54 @@ let allInnovations = [];
 document.addEventListener('DOMContentLoaded', () => {
     const refreshBtn = document.getElementById('refreshBtn');
     const filterTags = document.querySelectorAll('.tag');
-    
+    const settingsToggle = document.getElementById('settingsToggle');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const apiKeyInput = document.getElementById('apiKeyInput');
+    const saveApiKeyBtn = document.getElementById('saveApiKey');
+    const clearApiKeyBtn = document.getElementById('clearApiKey');
+    const toggleKeyVisibility = document.getElementById('toggleKeyVisibility');
+    const apiKeyStatus = document.getElementById('apiKeyStatus');
+
+    // Populate input if a key is already saved
+    const existingKey = getApiKey();
+    if (existingKey) {
+        apiKeyInput.value = existingKey;
+        apiKeyStatus.textContent = '✅ API key loaded from storage';
+        apiKeyStatus.className = 'api-key-status status-ok';
+    }
+
+    settingsToggle.addEventListener('click', () => {
+        const isHidden = settingsPanel.style.display === 'none';
+        settingsPanel.style.display = isHidden ? 'block' : 'none';
+        settingsToggle.classList.toggle('settings-toggle-open', isHidden);
+    });
+
+    toggleKeyVisibility.addEventListener('click', () => {
+        apiKeyInput.type = apiKeyInput.type === 'password' ? 'text' : 'password';
+    });
+
+    saveApiKeyBtn.addEventListener('click', () => {
+        const key = apiKeyInput.value.trim();
+        if (!key) {
+            apiKeyStatus.textContent = '⚠️ Please enter an API key first.';
+            apiKeyStatus.className = 'api-key-status status-warn';
+            return;
+        }
+        saveApiKey(key);
+        apiKeyStatus.textContent = '✅ API key saved. Click Refresh to use Gemma AI!';
+        apiKeyStatus.className = 'api-key-status status-ok';
+    });
+
+    clearApiKeyBtn.addEventListener('click', () => {
+        clearApiKey();
+        apiKeyInput.value = '';
+        apiKeyStatus.textContent = '🗑️ API key cleared. Using sample data.';
+        apiKeyStatus.className = 'api-key-status status-warn';
+        document.getElementById('aiBadge').style.display = 'none';
+    });
+
     refreshBtn.addEventListener('click', fetchInnovations);
-    
+
     filterTags.forEach(tag => {
         tag.addEventListener('click', () => {
             filterTags.forEach(t => t.classList.remove('active'));
@@ -119,36 +263,58 @@ document.addEventListener('DOMContentLoaded', () => {
             displayInnovations();
         });
     });
-    
+
     // Load initial innovations
     fetchInnovations();
 });
 
-// Fetch innovations from various sources
+// Fetch innovations — uses Gemma AI when an API key is present, otherwise falls back to sample data
 async function fetchInnovations() {
     const loading = document.getElementById('loading');
+    const loadingText = document.getElementById('loadingText');
     const innovationsContainer = document.getElementById('innovations');
     const errorContainer = document.getElementById('error');
-    
+    const aiBadge = document.getElementById('aiBadge');
+
     loading.classList.add('active');
     innovationsContainer.innerHTML = '';
     errorContainer.style.display = 'none';
-    
+
+    const hasApiKey = Boolean(getApiKey());
+
+    if (hasApiKey) {
+        loadingText.textContent = '🤖 Gemma AI is sweeping the latest breakthroughs…';
+    } else {
+        loadingText.textContent = 'Searching for latest innovations...';
+    }
+
     try {
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // In production, you would fetch from real APIs here
-        // For now, we'll use sample data with some randomization to simulate "fresh" data
-        allInnovations = shuffleArray([...sampleInnovations]);
-        
-        // Update last update time
+        if (hasApiKey) {
+            const gemmaResults = await fetchFromGemma(currentFilter);
+            allInnovations = gemmaResults;
+            aiBadge.style.display = 'inline-block';
+        } else {
+            // Simulate API call delay for sample data
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            allInnovations = shuffleArray([...sampleInnovations]);
+            aiBadge.style.display = 'none';
+        }
+
         document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
-        
         displayInnovations();
     } catch (error) {
         console.error('Error fetching innovations:', error);
-        errorContainer.style.display = 'block';
+        aiBadge.style.display = 'none';
+        const errorText = document.getElementById('errorText');
+        if (hasApiKey) {
+            errorText.textContent = `Gemma AI error: ${error.message}. Falling back to sample data.`;
+            allInnovations = shuffleArray([...sampleInnovations]);
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
+            displayInnovations();
+        } else {
+            errorText.textContent = 'Unable to fetch innovations. Please try again later.';
+            errorContainer.style.display = 'block';
+        }
     } finally {
         loading.classList.remove('active');
     }
@@ -184,17 +350,19 @@ function createInnovationCard(innovation, index) {
     const card = document.createElement('div');
     card.className = 'innovation-card';
     card.style.animationDelay = `${index * 0.1}s`;
-    
+
+    const safeUrl = sanitizeUrl(innovation.url);
+
     card.innerHTML = `
-        <span class="innovation-category">${innovation.category}</span>
-        <h3>${innovation.title}</h3>
-        <p class="innovation-date">📅 ${formatDate(innovation.date)}</p>
-        <p>${innovation.description}</p>
-        <a href="${innovation.url}" target="_blank" rel="noopener noreferrer" class="innovation-link">
+        <span class="innovation-category">${escapeHtml(innovation.category)}</span>
+        <h3>${escapeHtml(innovation.title)}</h3>
+        <p class="innovation-date">📅 ${formatDate(escapeHtml(innovation.date))}</p>
+        <p>${escapeHtml(innovation.description)}</p>
+        <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="innovation-link">
             Read Full Article →
         </a>
     `;
-    
+
     return card;
 }
 
@@ -253,9 +421,15 @@ async function fetchFromArXiv(category) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         fetchInnovations,
+        fetchFromGemma,
         displayInnovations,
         createInnovationCard,
         formatDate,
-        shuffleArray
+        shuffleArray,
+        escapeHtml,
+        sanitizeUrl,
+        getApiKey,
+        saveApiKey,
+        clearApiKey
     };
 }

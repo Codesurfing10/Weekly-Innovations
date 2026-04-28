@@ -258,7 +258,164 @@ body {
     background: linear-gradient(135deg, #FF4500, #FFD700);
 }
 
-/* Error Message */
+/* AI Badge */
+.ai-badge {
+    display: inline-block;
+    margin: 10px auto 15px;
+    padding: 6px 18px;
+    background: linear-gradient(135deg, #9b59b6, #3498db);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 15px rgba(155, 89, 182, 0.6);
+    animation: aiBadgeGlow 2s ease-in-out infinite;
+}
+
+@keyframes aiBadgeGlow {
+    0%, 100% { box-shadow: 0 0 10px rgba(155, 89, 182, 0.5); }
+    50% { box-shadow: 0 0 25px rgba(52, 152, 219, 0.9); }
+}
+
+/* API Settings Panel */
+.api-settings {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.settings-toggle {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    color: #fff;
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.settings-toggle:hover,
+.settings-toggle-open {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: #FFD700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.settings-panel {
+    margin-top: 15px;
+    padding: 20px 25px;
+    background: rgba(30, 60, 114, 0.6);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 12px;
+    text-align: left;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.settings-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.settings-link {
+    color: #FFD700;
+    text-decoration: underline;
+}
+
+.settings-link:hover {
+    color: #FF4500;
+}
+
+.api-key-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.api-key-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 2px solid rgba(70, 130, 180, 0.6);
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.api-key-input:focus {
+    border-color: #FFD700;
+}
+
+.toggle-key-btn,
+.save-key-btn,
+.clear-key-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.toggle-key-btn {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.toggle-key-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.save-key-btn {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: #fff;
+}
+
+.save-key-btn:hover {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    transform: translateY(-2px);
+}
+
+.clear-key-btn {
+    background: rgba(255, 69, 0, 0.3);
+    color: #fff;
+    border: 1px solid #FF4500;
+}
+
+.clear-key-btn:hover {
+    background: rgba(255, 69, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.api-key-status {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    min-height: 1.2em;
+}
+
+.status-ok { color: #2ecc71; }
+.status-warn { color: #FFD700; }
+
+@media (max-width: 600px) {
+    .api-key-row {
+        flex-direction: column;
+    }
+    .api-key-input {
+        width: 100%;
+    }
+}
+
+
 .error-message {
     text-align: center;
     padding: 40px;
