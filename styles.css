@@ -1,4 +1,4 @@
-/* Chrono-Futures: Victorian/broadsheet telegraph meets neon sci-fi */
+/* Chrono-Futures Gazette on a retro-80s synthwave / CRT stage */
 
 :root {
     --parchment: #e8dcc4;
@@ -9,7 +9,12 @@
     --copper: #c9855a;
     --amber: #ffbf3a;
     --cyan-neon: #3de0ff;
+    --magenta-neon: #ff2bd6;
+    --violet-night: #1a0a2e;
+    --navy-deep: #0b0618;
+    --purple-mid: #2a1250;
     --cyan-dim: rgba(61, 224, 255, 0.35);
+    --magenta-dim: rgba(255, 43, 214, 0.35);
     --amber-glow: rgba(255, 191, 58, 0.45);
     --brass-glow: rgba(184, 115, 51, 0.5);
     --card-ink: #12100e;
@@ -26,20 +31,104 @@
 
 body {
     font-family: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
-    background-color: var(--ink);
+    background-color: var(--navy-deep);
     background-image:
-        radial-gradient(ellipse at 20% 0%, rgba(61, 224, 255, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 100%, rgba(184, 115, 51, 0.08) 0%, transparent 45%),
-        linear-gradient(180deg, #0d0b09 0%, #16120e 40%, #0f0d0a 100%);
+        radial-gradient(ellipse 120% 80% at 50% -10%, rgba(255, 43, 214, 0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 90% 60% at 50% 100%, rgba(61, 224, 255, 0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 15% 30%, rgba(120, 40, 200, 0.25) 0%, transparent 40%),
+        radial-gradient(ellipse at 85% 20%, rgba(61, 224, 255, 0.08) 0%, transparent 35%),
+        linear-gradient(180deg, #070414 0%, var(--navy-deep) 28%, var(--violet-night) 62%, #12082a 78%, #1a0a2e 100%);
     min-height: 100vh;
     color: var(--parchment);
     line-height: 1.65;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Fixed retro stage: perspective neon grid + CRT scanlines + vignette */
+.retro-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Magenta/cyan neon horizon glow */
+.retro-stage::before {
+    content: '';
+    position: absolute;
+    left: -20%;
+    right: -20%;
+    bottom: 38%;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--magenta-neon) 18%,
+        #fff 48%,
+        var(--cyan-neon) 82%,
+        transparent 100%
+    );
+    box-shadow:
+        0 0 12px 2px rgba(255, 43, 214, 0.7),
+        0 0 40px 8px rgba(61, 224, 255, 0.45),
+        0 0 80px 20px rgba(255, 43, 214, 0.25);
+    opacity: 0.85;
+}
+
+/* Perspective neon grid floor */
+.retro-grid {
+    position: absolute;
+    left: -25%;
+    right: -25%;
+    bottom: -5%;
+    height: 55%;
+    background-image:
+        linear-gradient(to right, rgba(255, 43, 214, 0.55) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(61, 224, 255, 0.45) 1px, transparent 1px);
+    background-size: 48px 48px;
+    transform: perspective(420px) rotateX(58deg);
+    transform-origin: center top;
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.55) 25%, rgba(0, 0, 0, 0.9) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.55) 25%, rgba(0, 0, 0, 0.9) 100%);
+    opacity: 0.55;
+    box-shadow: inset 0 40px 80px rgba(255, 43, 214, 0.12);
+}
+
+/* CRT scanlines */
+.retro-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(0, 0, 0, 0.18) 2px,
+        rgba(0, 0, 0, 0.18) 3px
+    );
+    opacity: 0.45;
+    mix-blend-mode: multiply;
+}
+
+/* Soft CRT vignette */
+.retro-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse 75% 70% at 50% 45%,
+        transparent 40%,
+        rgba(5, 2, 16, 0.45) 75%,
+        rgba(2, 0, 10, 0.85) 100%
+    );
 }
 
 .container {
     max-width: 1280px;
     margin: 0 auto;
     padding: 24px 20px 40px;
+    position: relative;
+    z-index: 1;
 }
 
 /* —— Masthead / broadsheet header —— */
@@ -55,7 +144,8 @@ body {
     margin-bottom: 28px;
     position: relative;
     box-shadow:
-        0 0 0 1px rgba(61, 224, 255, 0.15),
+        0 0 0 1px rgba(255, 43, 214, 0.25),
+        0 0 24px rgba(61, 224, 255, 0.2),
         0 8px 32px rgba(0, 0, 0, 0.55),
         inset 0 0 60px rgba(184, 115, 51, 0.08);
     animation: none;
@@ -168,10 +258,14 @@ body {
     align-items: center;
     margin-bottom: 28px;
     padding: 16px 18px;
-    background: rgba(232, 220, 196, 0.06);
-    border: 1px solid rgba(184, 115, 51, 0.4);
+    background: rgba(12, 6, 28, 0.55);
+    border: 1px solid rgba(255, 43, 214, 0.35);
     border-radius: 2px;
-    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.25);
+    box-shadow:
+        inset 0 0 30px rgba(0, 0, 0, 0.35),
+        0 0 18px rgba(61, 224, 255, 0.12);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 
 .archives-label {
@@ -245,10 +339,10 @@ body {
     margin: 0 auto 20px;
     border: 3px solid rgba(184, 115, 51, 0.25);
     border-top: 3px solid var(--cyan-neon);
-    border-right: 3px solid var(--amber);
+    border-right: 3px solid var(--magenta-neon);
     border-radius: 50%;
     animation: spin 1.1s linear infinite;
-    box-shadow: 0 0 16px var(--cyan-dim);
+    box-shadow: 0 0 16px var(--cyan-dim), 0 0 12px var(--magenta-dim);
 }
 
 @keyframes spin {
@@ -272,7 +366,7 @@ body {
 
 .innovation-card {
     background:
-        linear-gradient(165deg, var(--parchment) 0%, var(--parchment-deep) 100%);
+        linear-gradient(165deg, rgba(232, 220, 196, 0.97) 0%, rgba(212, 196, 168, 0.95) 100%);
     color: var(--text-body);
     border: 2px solid var(--brass);
     border-radius: 2px;
@@ -282,7 +376,9 @@ body {
     position: relative;
     overflow: hidden;
     box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 43, 214, 0.15),
+        0 0 16px rgba(61, 224, 255, 0.1),
+        0 4px 16px rgba(0, 0, 0, 0.45),
         inset 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
@@ -309,9 +405,10 @@ body {
     transform: translateY(-4px);
     border-color: var(--cyan-neon);
     box-shadow:
-        0 0 20px var(--cyan-dim),
-        0 10px 28px rgba(0, 0, 0, 0.45),
-        inset 0 0 0 1px rgba(61, 224, 255, 0.2);
+        0 0 22px var(--cyan-dim),
+        0 0 28px rgba(255, 43, 214, 0.2),
+        0 10px 28px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 1px rgba(61, 224, 255, 0.25);
 }
 
 .innovation-card:nth-child(even),
@@ -428,7 +525,7 @@ body {
 
 .settings-toggle {
     font-family: 'Share Tech Mono', monospace;
-    background: transparent;
+    background: rgba(12, 6, 28, 0.5);
     border: 1px dashed var(--brass);
     color: var(--parchment-deep);
     padding: 10px 22px;
@@ -453,14 +550,18 @@ body {
 .settings-panel {
     margin-top: 14px;
     padding: 20px 24px;
-    background: rgba(232, 220, 196, 0.08);
+    background: rgba(12, 6, 28, 0.65);
     border: 2px double var(--brass);
     border-radius: 2px;
     text-align: left;
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(255, 43, 214, 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .settings-description {
@@ -582,18 +683,19 @@ body {
 .error-message {
     text-align: center;
     padding: 36px;
-    background: rgba(232, 220, 196, 0.06);
+    background: rgba(12, 6, 28, 0.55);
     border: 2px double var(--copper);
     border-radius: 2px;
     margin: 20px 0;
     color: var(--parchment-deep);
+    box-shadow: 0 0 16px rgba(255, 43, 214, 0.1);
 }
 
 .empty-archives {
     grid-column: 1 / -1;
     text-align: center;
     padding: 48px 24px;
-    background: rgba(232, 220, 196, 0.05);
+    background: rgba(12, 6, 28, 0.5);
     border: 1px dashed var(--brass);
     color: var(--parchment-deep);
 }
@@ -610,7 +712,9 @@ footer {
     padding: 28px 20px;
     background: transparent;
     margin-top: 24px;
-    border-top: 2px double rgba(184, 115, 51, 0.45);
+    border-top: 2px double rgba(255, 43, 214, 0.35);
+    position: relative;
+    z-index: 1;
 }
 
 .footer-rule {
@@ -625,6 +729,19 @@ footer p {
     color: var(--parchment-deep);
 }
 
+/* Prefer reduced motion: keep stage static, no extra motion */
+@media (prefers-reduced-motion: reduce) {
+    .innovation-card,
+    .innovation-card:nth-child(even),
+    .innovation-card:nth-child(odd) {
+        animation: none;
+    }
+    .spinner {
+        animation: none;
+        border-top-color: var(--cyan-neon);
+    }
+}
+
 /* —— Responsive —— */
 @media (max-width: 768px) {
     .animated-header h1 {
@@ -637,5 +754,10 @@ footer p {
 
     .filter-tags {
         justify-content: center;
+    }
+
+    .retro-grid {
+        height: 42%;
+        opacity: 0.4;
     }
 }
