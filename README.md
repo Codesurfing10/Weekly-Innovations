@@ -1,18 +1,17 @@
-# Weekly-Innovations
+# Weekly-Innovations · The Innovation Channel
 
-A dynamic web application that displays the latest innovations and breakthroughs across multiple scientific and technological fields including materials, biochemistry, chemistry, space, nanotechnology, medicine, science, nature, quantum computing, satellites, and solar energy.
+A chrono-futures gazette for the latest innovations and breakthroughs across materials, biochemistry, chemistry, space, nanotechnology, medicine, science, nature, quantum computing, satellites, and solar energy. Live at **[theinnovationchannel.com](https://theinnovationchannel.com)** — Victorian broadsheet meets neon telegraph of tomorrow.
 
 ## Features
 
-- 🤖 **Gemma AI Integration**: Uses Google's Gemma AI model to sweep the web and generate real-time, cutting-edge innovation summaries across all categories
-- 🔄 **Real-time Updates**: Refresh button to fetch the latest innovations
-- 🎨 **Animated Interface**: Beautiful color scheme with blue, steel, orange-red, and yellow animations
-- 🏷️ **Category Filtering**: Filter innovations by specific fields of interest
-- 📱 **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- 🔗 **Direct Links**: Easy access to full articles and research papers
-- ✨ **Dynamic Animations**: Eye-catching animations and transitions throughout
-- 🚀 **Automated CI/CD**: GitHub Actions deploys every `main` push to GitHub Pages instantly
-- 🧠 **Weekly AI Self-Improvement**: A scheduled GitHub Actions workflow uses GPT-4o-mini to analyze the site and open a PR with improvements every Monday
+- **Gemma Apparatus**: Google's Gemma AI sweeps for real-time, cutting-edge innovation summaries across all categories
+- **Fresh Dispatches**: Requisition button to fetch the latest breakthroughs from the wires
+- **Chrono-Futures Interface**: Aged parchment, brass/copper accents, and cyan/amber neon glow — Playfair Display & Libre Baskerville masthead
+- **Archive Seals**: Filter innovations by field via stamp-like category tags
+- **Responsive Layout**: Works on desktop, tablet, and mobile
+- **Full Despatches**: Direct links to articles and research papers
+- **Automated CI/CD**: GitHub Actions deploys every `main` push to GitHub Pages instantly
+- **Weekly AI Self-Improvement**: Scheduled workflow uses GPT-4o-mini to open improvement PRs every Monday
 
 ## CI/CD & Automated Deployment
 
@@ -61,20 +60,21 @@ GitHub → Actions → AI Site Improvement → Run workflow → choose type
 
 1. **Get an API key**: Visit [Google AI Studio](https://aistudio.google.com/app/apikey) and create a free API key.
 2. **Open the app**: Open `index.html` in any modern browser.
-3. **Enter your key**: Click **⚙️ Gemma AI Settings**, paste your key, and click **Save**.
-4. **Refresh**: Click **🔄 Refresh for Latest** — Gemma AI will now generate fresh, cutting-edge innovations for every category.
+3. **Enter your cipher**: Click **Gemma Apparatus Settings**, paste your key, and click **Record**.
+4. **Refresh**: Click **Requisition Fresh Dispatches** — Gemma will generate fresh breakthroughs in the chrono-futures gazette voice.
 
 The API key is stored only in your browser's `localStorage` and is sent exclusively to Google's Generative Language API. No third-party servers are involved.
 
 > Without an API key, the app falls back to built-in sample data so it always works out of the box.
 
-## Color Scheme
+## Color Scheme (Chrono-Futures)
 
-The application features a vibrant animated color palette:
-- **Steel Blue** (#4682B4) - Represents technology and innovation
-- **Steel/Gray-Blue** (rgba gradients) - Professional and modern feel
-- **Orange-Red** (#FF4500) - Energy and excitement
-- **Yellow** (#FFD700) - Optimism and breakthrough discoveries
+Victorian parchment meets neon telegraph:
+- **Parchment** (#e8dcc4) — Aged broadsheet card stock
+- **Deep ink** (#0d0b09) — Background and body contrast
+- **Brass / copper** (#b87333 / #c9855a) — Ornamental rules and seals
+- **Amber neon** (#ffbf3a) — Highlights and active stamps
+- **Cyan neon** (#3de0ff) — Futuristic glow accents
 
 ## Categories Covered
 
