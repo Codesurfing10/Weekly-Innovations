@@ -67,14 +67,16 @@ async function fetchFromGemma(category) {
         ? `Spread entries across these categories: ${Object.keys(categories).join(', ')}`
         : `Set the "category" field to "${category}" for every entry`;
 
-    const prompt = `You are an expert science and technology journalist with access to the latest research.
-Generate 8 of the most cutting-edge, real-world innovation summaries representing genuine recent breakthroughs (2024-2025) in ${categoryScope}.
+    const prompt = `You are a chronographer for a Victorian-era gazette reporting from the twenty-third century — formal, vivid, slightly archaic diction mixed with modern scientific terms (e.g. "Hereby announced", "a most singular apparatus", "from the orbital post").
+Generate 8 of the most cutting-edge, real-world innovation summaries representing genuine recent breakthroughs (2024-2026) in ${categoryScope}.
+
+Write each "title" and "description" in that chrono-futures voice while remaining factual. Do not invent fictional discoveries.
 
 Return ONLY a valid JSON array containing exactly 8 objects. Do not include markdown code fences, prose, or any text outside the JSON array.
 Each object must have these exact keys:
-- "title": string — a compelling, factual headline (max 100 characters)
+- "title": string — a compelling, factual headline in the gazette voice (max 100 characters)
 - "category": string — ${categoryRule}
-- "description": string — 2-3 sentences describing the breakthrough and its broader significance
+- "description": string — 2-3 sentences describing the breakthrough and its broader significance, in the same voice
 - "date": string — publication or announcement date in YYYY-MM-DD format, within the last 6 months
 - "url": string — a real, authoritative URL (e.g. nature.com, science.org, nasa.gov, arxiv.org, pubmed.ncbi.nlm.nih.gov, cell.com, thelancet.com, esa.int, etc.)`;
 
@@ -112,89 +114,89 @@ Each object must have these exact keys:
     return parsed;
 }
 
-// Sample innovations data (in production, this would come from APIs)
+// Sample innovations — chrono-futures gazette voice (fallback when no API key)
 const sampleInnovations = [
     {
-        title: "Revolutionary Quantum Computer Achieves Quantum Supremacy",
+        title: "Hereby Announced: A Quantum Engine of Most Singular Power",
         category: "quantum",
-        description: "Scientists have developed a new quantum computer that can solve complex problems exponentially faster than classical computers, marking a major milestone in quantum computing technology.",
+        description: "From the laboratories comes word that a new quantum apparatus hath solved problems once deemed intractable, outpacing the classical engines of computation by orders of magnitude. The Gazette records this as a milestone of the first rank in quantum craft.",
         date: new Date().toISOString().split('T')[0],
         url: "https://www.nature.com/subjects/quantum-computing"
     },
     {
-        title: "Breakthrough in Graphene-Based Materials for Energy Storage",
+        title: "Graphene Composite Yields Batteries of Astonishing Vitality",
         category: "materials",
-        description: "Researchers have created a new graphene composite material that dramatically increases battery capacity and charging speed, potentially revolutionizing electric vehicles and portable electronics.",
+        description: "Researchers report a graphene-based substance that stores charge with uncommon density and replenishes itself with remarkable haste. Electric carriages and pocket instruments stand to be transformed by this material innovation.",
         date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
         url: "https://www.nature.com/subjects/materials-science"
     },
     {
-        title: "New CRISPR Technique Enables Precise Gene Editing in Living Organisms",
+        title: "A Refined CRISPR Quill Writes Genes with Surgical Exactitude",
         category: "biochemistry",
-        description: "A novel CRISPR-based method allows for unprecedented precision in gene editing, opening new possibilities for treating genetic diseases and advancing personalized medicine.",
+        description: "A novel CRISPR technique permits gene emendation within living creatures with a precision formerly unattainable. The medical colleges foresee new remedies for hereditary afflictions and a golden age of personalised physic.",
         date: new Date(Date.now() - 172800000).toISOString().split('T')[0],
         url: "https://www.nature.com/subjects/biochemistry"
     },
     {
-        title: "NASA's James Webb Telescope Discovers Earth-Like Exoplanet",
+        title: "From the Orbital Post: Webb Spies an Earth-Kin World",
         category: "space",
-        description: "The James Webb Space Telescope has identified a potentially habitable exoplanet with atmospheric conditions similar to Earth, located in the habitable zone of its star system.",
+        description: "The James Webb observatory hath discerned a potentially habitable exoplanet whose atmospheric character recalls our own sphere, nestled in the temperate belt of its sun. Astronomers of every nation attend the next despatch with keen interest.",
         date: new Date(Date.now() - 259200000).toISOString().split('T')[0],
         url: "https://www.nasa.gov/mission_pages/webb/main/index.html"
     },
     {
-        title: "Nanorobots Successfully Target Cancer Cells in Clinical Trials",
+        title: "Minute Automata Strike at the Cancerous Blight",
         category: "nanotechnology",
-        description: "Microscopic nanorobots have shown remarkable success in identifying and destroying cancer cells while leaving healthy tissue unharmed in phase II clinical trials.",
+        description: "Microscopic nanorobots, in trials of the second phase, have identified and undone malignant cells whilst sparing wholesome tissue. A most singular apparatus of healing, witnessed by the clinical boards with cautious applause.",
         date: new Date(Date.now() - 345600000).toISOString().split('T')[0],
         url: "https://www.science.org/topic/nanotechnology"
     },
     {
-        title: "Artificial Intelligence Predicts Protein Structures with 95% Accuracy",
+        title: "Thinking Engines Forecast Protein Folds with Rare Certainty",
         category: "medicine",
-        description: "A new AI system can predict protein folding structures with unprecedented accuracy, accelerating drug discovery and our understanding of diseases.",
+        description: "An artificial intellect now predicts the folding of proteins with accuracy approaching ninety-five in the hundred. Drug discovery and the mapping of disease mechanisms advance at a pace the old pharmacopoeias could scarce imagine.",
         date: new Date(Date.now() - 432000000).toISOString().split('T')[0],
         url: "https://www.nature.com/subjects/medical-research"
     },
     {
-        title: "Solar Cell Efficiency Reaches Record 47% Using Perovskite Technology",
+        title: "Perovskite Cells Attain a Record Harvest of Solar Fire",
         category: "solar",
-        description: "Scientists have achieved a breakthrough in solar cell efficiency using advanced perovskite materials, bringing us closer to truly sustainable energy solutions.",
+        description: "Natural philosophers record solar cells of perovskite construction yielding nearly half the incident light as useful power. The path toward truly enduring energy for the cities of tomorrow grows clearer by the day.",
         date: new Date(Date.now() - 518400000).toISOString().split('T')[0],
         url: "https://www.science.org/topic/solar-energy"
     },
     {
-        title: "Chemical Synthesis Method Reduces CO2 Emissions by 80%",
+        title: "Green Alchemy Curtails the Smokestack's Carbon Toll",
         category: "chemistry",
-        description: "Researchers have developed a revolutionary green chemistry technique that dramatically reduces carbon emissions in industrial chemical production.",
+        description: "A revolutionary method of chemical synthesis is said to diminish industrial carbon exhalations by four-fifths. The Gazette hails this as green chemistry of the highest practical consequence.",
         date: new Date(Date.now() - 604800000).toISOString().split('T')[0],
         url: "https://www.nature.com/subjects/chemistry"
     },
     {
-        title: "Biodiversity Hotspot Discovered in Deep Ocean Trench",
+        title: "Abyssal Menagerie Found in the Mariana Deep",
         category: "nature",
-        description: "Marine biologists have uncovered a previously unknown ecosystem teeming with unique species in the Mariana Trench, expanding our understanding of life in extreme environments.",
+        description: "Marine naturalists have charted a hitherto unknown ecosystem teeming with peculiar species in the Mariana Trench. Life in the extreme dark reveals itself anew, expanding the catalogue of Creation's oddities.",
         date: new Date(Date.now() - 691200000).toISOString().split('T')[0],
         url: "https://www.nature.com/subjects/biodiversity"
     },
     {
-        title: "Advanced Satellite System Enables Real-Time Climate Monitoring",
+        title: "Orbital Sentinels Wire the Climate in Real Time",
         category: "satellites",
-        description: "A new constellation of satellites equipped with cutting-edge sensors provides unprecedented real-time data on global climate patterns and environmental changes.",
+        description: "A fresh constellation of satellites, armed with sensors of uncommon acuity, now relays continuous intelligence upon global climate and the state of the terrestrial estate. From the orbital post, the weather of worlds is made plain.",
         date: new Date(Date.now() - 777600000).toISOString().split('T')[0],
         url: "https://www.nasa.gov/mission_pages/satellites/main/index.html"
     },
     {
-        title: "Superconducting Materials Work at Room Temperature",
+        title: "Room-Temperature Superconductors Enter the Ledger",
         category: "science",
-        description: "Physicists have created a new class of superconducting materials that operate at room temperature and ambient pressure, potentially revolutionizing power transmission and magnetic levitation.",
+        description: "Physicists announce a class of superconducting materials that operate at ordinary warmth and pressure. Power transmission and magnetic levitation may yet be remade by this most practical wonder.",
         date: new Date(Date.now() - 864000000).toISOString().split('T')[0],
         url: "https://www.science.org/"
     },
     {
-        title: "Lab-Grown Organs Successfully Transplanted in Human Trials",
+        title: "Organs Grown in the Laboratory Take Root in Living Hosts",
         category: "medicine",
-        description: "Bioengineered organs grown from patients' own cells have been successfully transplanted, marking a major milestone in regenerative medicine and eliminating organ rejection issues.",
+        description: "Bioengineered organs, cultivated from a patient's own cells, have been transplanted with success in human trials. Regenerative medicine thus dodges the ancient spectre of rejection — a milestone duly entered in these columns.",
         date: new Date(Date.now() - 950400000).toISOString().split('T')[0],
         url: "https://www.nature.com/subjects/regenerative-medicine"
     }
@@ -214,12 +216,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearApiKeyBtn = document.getElementById('clearApiKey');
     const toggleKeyVisibility = document.getElementById('toggleKeyVisibility');
     const apiKeyStatus = document.getElementById('apiKeyStatus');
+    const footerYear = document.getElementById('footerYear');
+
+    if (footerYear) {
+        footerYear.textContent = String(new Date().getFullYear());
+    }
 
     // Populate input if a key is already saved
     const existingKey = getApiKey();
     if (existingKey) {
         apiKeyInput.value = existingKey;
-        apiKeyStatus.textContent = '✅ API key loaded from storage';
+        apiKeyStatus.textContent = 'Cipher loaded from the local vault.';
         apiKeyStatus.className = 'api-key-status status-ok';
     }
 
@@ -230,25 +237,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     toggleKeyVisibility.addEventListener('click', () => {
-        apiKeyInput.type = apiKeyInput.type === 'password' ? 'text' : 'password';
+        const showing = apiKeyInput.type === 'text';
+        apiKeyInput.type = showing ? 'password' : 'text';
+        toggleKeyVisibility.textContent = showing ? 'Reveal' : 'Conceal';
     });
 
     saveApiKeyBtn.addEventListener('click', () => {
         const key = apiKeyInput.value.trim();
         if (!key) {
-            apiKeyStatus.textContent = '⚠️ Please enter an API key first.';
+            apiKeyStatus.textContent = 'Pray enter a cipher before recording.';
             apiKeyStatus.className = 'api-key-status status-warn';
             return;
         }
         saveApiKey(key);
-        apiKeyStatus.textContent = '✅ API key saved. Click Refresh to use Gemma AI!';
+        apiKeyStatus.textContent = 'Cipher recorded. Requisition fresh dispatches to engage Gemma.';
         apiKeyStatus.className = 'api-key-status status-ok';
     });
 
     clearApiKeyBtn.addEventListener('click', () => {
         clearApiKey();
         apiKeyInput.value = '';
-        apiKeyStatus.textContent = '🗑️ API key cleared. Using sample data.';
+        apiKeyStatus.textContent = 'Cipher expunged. Resorting to the archive samples.';
         apiKeyStatus.className = 'api-key-status status-warn';
         document.getElementById('aiBadge').style.display = 'none';
     });
@@ -283,9 +292,9 @@ async function fetchInnovations() {
     const hasApiKey = Boolean(getApiKey());
 
     if (hasApiKey) {
-        loadingText.textContent = '🤖 Gemma AI is sweeping the latest breakthroughs…';
+        loadingText.textContent = 'Gemma apparatus sweeping the wires for breakthroughs…';
     } else {
-        loadingText.textContent = 'Searching for latest innovations...';
+        loadingText.textContent = 'Consulting the archives for fresh intelligence…';
     }
 
     try {
@@ -307,12 +316,12 @@ async function fetchInnovations() {
         aiBadge.style.display = 'none';
         const errorText = document.getElementById('errorText');
         if (hasApiKey) {
-            errorText.textContent = `Gemma AI error: ${error.message}. Falling back to sample data.`;
+            errorText.textContent = `Gemma apparatus faltered: ${error.message}. Falling back to archive samples.`;
             allInnovations = shuffleArray([...sampleInnovations]);
             document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
             displayInnovations();
         } else {
-            errorText.textContent = 'Unable to fetch innovations. Please try again later.';
+            errorText.textContent = 'The wires have gone silent. Pray try again presently.';
             errorContainer.style.display = 'block';
         }
     } finally {
@@ -324,21 +333,21 @@ async function fetchInnovations() {
 function displayInnovations() {
     const innovationsContainer = document.getElementById('innovations');
     innovationsContainer.innerHTML = '';
-    
-    const filteredInnovations = currentFilter === 'all' 
-        ? allInnovations 
+
+    const filteredInnovations = currentFilter === 'all'
+        ? allInnovations
         : allInnovations.filter(innovation => innovation.category === currentFilter);
-    
+
     if (filteredInnovations.length === 0) {
         innovationsContainer.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                <h2>No innovations found for this category</h2>
-                <p>Try selecting a different category or refresh for new content.</p>
+            <div class="empty-archives">
+                <h2>No dispatches in this folio</h2>
+                <p>Consult another archive seal, or requisition fresh dispatches from the wires.</p>
             </div>
         `;
         return;
     }
-    
+
     filteredInnovations.forEach((innovation, index) => {
         const card = createInnovationCard(innovation, index);
         innovationsContainer.appendChild(card);
@@ -356,10 +365,10 @@ function createInnovationCard(innovation, index) {
     card.innerHTML = `
         <span class="innovation-category">${escapeHtml(innovation.category)}</span>
         <h3>${escapeHtml(innovation.title)}</h3>
-        <p class="innovation-date">📅 ${formatDate(escapeHtml(innovation.date))}</p>
+        <p class="innovation-date">WIRED · ${formatDate(escapeHtml(innovation.date))}</p>
         <p>${escapeHtml(innovation.description)}</p>
         <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="innovation-link">
-            Read Full Article →
+            Read the Full Despatch
         </a>
     `;
 
@@ -372,16 +381,16 @@ function formatDate(dateString) {
     const now = new Date();
     const diffTime = Math.abs(now - date);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    
-    return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
+
+    if (diffDays === 0) return 'This very day';
+    if (diffDays === 1) return 'Yester-day';
+    if (diffDays < 7) return `${diffDays} days hence`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks hence`;
+
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
     });
 }
 
