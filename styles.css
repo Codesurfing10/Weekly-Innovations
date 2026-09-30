@@ -761,3 +761,70 @@ footer p {
         opacity: 0.4;
     }
 }
+
+
+/* —— PWA / iPhone home-screen polish —— */
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    /* Safe-area for notched iPhones in standalone mode */
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    /* Soften rubber-band overscroll without locking desktop scroll */
+    overscroll-behavior-y: contain;
+}
+
+.container {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+}
+
+footer {
+    padding-bottom: max(28px, calc(16px + env(safe-area-inset-bottom)));
+}
+
+/* Touch-friendly archive filters (min ~44px tap targets on narrow screens) */
+@media (max-width: 768px) {
+    .filter-tags,
+    .archives-bar {
+        gap: 10px;
+        padding: 14px 12px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tag {
+        padding: 10px 14px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-tap-highlight-color: rgba(61, 224, 255, 0.2);
+        touch-action: manipulation;
+    }
+
+    .refresh-btn,
+    .settings-toggle,
+    .save-key-btn,
+    .clear-key-btn,
+    .toggle-key-btn {
+        min-height: 44px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(255, 43, 214, 0.15);
+    }
+
+    .api-key-input {
+        min-height: 44px;
+        font-size: 16px; /* avoid iOS zoom-on-focus */
+    }
+}
+
+/* Standalone PWA: slightly tighter masthead top padding under status bar */
+@media (display-mode: standalone) {
+    .container {
+        padding-top: max(16px, env(safe-area-inset-top));
+    }
+}

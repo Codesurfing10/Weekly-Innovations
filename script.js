@@ -442,3 +442,13 @@ if (typeof module !== 'undefined' && module.exports) {
         clearApiKey
     };
 }
+
+
+/* Register offline shell service worker (same-origin only; Gemma API stays network) */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch((err) => {
+            console.warn('Service worker registration skipped:', err);
+        });
+    });
+}

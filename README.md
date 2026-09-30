@@ -9,9 +9,22 @@ A chrono-futures gazette for the latest innovations and breakthroughs across mat
 - **Chrono-Futures Interface**: Aged parchment, brass/copper accents, and cyan/amber neon glow — Playfair Display & Libre Baskerville masthead
 - **Archive Seals**: Filter innovations by field via stamp-like category tags
 - **Responsive Layout**: Works on desktop, tablet, and mobile
+- **iPhone Home Screen (PWA)**: Add to Home Screen from Safari for a standalone app icon
 - **Full Despatches**: Direct links to articles and research papers
 - **Automated CI/CD**: GitHub Actions deploys every `main` push to GitHub Pages instantly
 - **Weekly AI Self-Improvement**: Scheduled workflow uses GPT-4o-mini to open improvement PRs every Monday
+
+
+## Install on iPhone (Home Screen App)
+
+This site is a Progressive Web App. On iPhone:
+
+1. Open **[theinnovationchannel.com](https://theinnovationchannel.com)** in **Safari** (not Chrome/Firefox).
+2. Tap the **Share** button (square with an upward arrow).
+3. Scroll and tap **Add to Home Screen**.
+4. Confirm the name (**Innovation Channel** / Innovations) and tap **Add**.
+
+The icon launches in standalone mode (no Safari chrome). A basic offline shell (HTML/CSS/JS/icons) is cached; Gemma AI fetches still require a network connection and your API key.
 
 ## CI/CD & Automated Deployment
 
